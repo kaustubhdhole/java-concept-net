@@ -56,21 +56,17 @@ public class ConceptNetService implements KnowledgeBaseService {
 
     public static void main(String[] args) {
         ConceptNetService knowledgeBaseService = new ConceptNetService();
-        String searchWord = "bank account";
-        String question = "What type of " + searchWord + "?";
-        List<String> hyperNyms = knowledgeBaseService.getHypoNyms(searchWord);
-        hyperNyms.stream().forEach(h -> System.out.println(h));
+        List<String> domainFilter = new ArrayList<>();
+        domainFilter.add("bank");
+        domainFilter.add("banking");
+        domainFilter.add("finance");
+        String searchWord = "Bank of America";
         Optional<CnNode> cnNodeOptional = knowledgeBaseService.query(searchWord);
-        cnNodeOptional.ifPresent(node -> {
-            System.out.println("***");
-            node.connectedNodes().stream().forEach(x-> System.out.println(x));
-            System.out.println("***");
-            node.connectedObjectNodes().stream().forEach(x-> System.out.println(x));
-            System.out.println("***");
-            node.connectedSubjectNodes().stream().forEach(x-> System.out.println(x));
-        });
-        System.out.println();
-
+        if (cnNodeOptional.isPresent()) {
+            CnNode cnNode = cnNodeOptional.get();
+            boolean unigramOverlap = cnNode.unigramOverlap(domainFilter);
+            System.out.println(unigramOverlap);
+        }
     }
 
 }

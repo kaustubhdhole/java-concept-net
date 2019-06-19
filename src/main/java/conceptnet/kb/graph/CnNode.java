@@ -35,6 +35,15 @@ public class CnNode extends CnObject {
     @SerializedName("view")
     PaginationView paginationView;
 
+    /**
+     * /c/en/bank_account
+     *
+     * @return bank account
+     */
+    public String label() {
+        return this.id().substring(5).replace("_", "");
+    }
+
     public List<String> connectedNodes() {
         return this.edges()
                 .stream()
@@ -94,4 +103,57 @@ public class CnNode extends CnObject {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * If thisNode is connected to any of thoseNodes.
+     *
+     * @param thoseNodes nodes we want to check for relation
+     * @return true if there is at least one relation
+     */
+    public boolean isConnectedTo(List<String> thoseNodes) {
+        return connectedNodes()
+                .stream()
+                .anyMatch(thisNode -> thoseNodes.contains(thisNode));
+    }
+
+    /**
+     * If thisNode is loosely related to any of the mentioned thoseNodes.
+     * Here, the node is checked not only for an exact match but even for a partial 1-gram overlap.
+     *
+     * @param thoseNodes nodes we want to check for relation
+     * @return true if there is at least one relation
+     */
+    public boolean unigramOverlap(List<String> thoseNodes) {
+        if (isConnectedTo(thoseNodes)) {
+            return true;
+        } else {
+            return connectedNodes()
+                    .stream()
+                    .anyMatch(thisNode -> {
+                        if (thisNode.contains(" ")) {
+                            for (String word : thisNode.split(" ")) {
+                                if (thoseNodes.contains(word)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    });
+        }
+    }
+
+    /**
+     * If thisNode has is related to any of thoseNodes.
+     *
+     * @param thoseNodes nodes we want to check for relation
+     * @return true if there is at least one relation
+     */
+    public boolean anyMatch(List<CnNode> thoseNodes) {
+        return connectedNodes()
+                .stream()
+                .anyMatch(thisNode -> thoseNodes
+                        .stream()
+                        .map(n -> n.label())
+                        .collect(Collectors.toList())
+                        .contains(thisNode));
+    }
 }
