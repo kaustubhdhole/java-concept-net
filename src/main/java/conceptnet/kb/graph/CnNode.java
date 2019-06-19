@@ -43,6 +43,11 @@ public class CnNode extends CnObject {
 
     }
 
+    /**
+     * Return all the connected nodes in which this node appears as the object.
+     *
+     * @return list of phrases for each node.
+     */
     public List<String> connectedSubjectNodes() {
         return edges()
                 .stream()
@@ -52,6 +57,11 @@ public class CnNode extends CnObject {
 
     }
 
+    /**
+     * Return all the connected nodes in which this node appears as the subject.
+     *
+     * @return list of phrases for each node.
+     */
     public List<String> connectedObjectNodes() {
         return edges()
                 .stream()
