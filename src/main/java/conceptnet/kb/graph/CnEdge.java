@@ -68,4 +68,11 @@ public class CnEdge extends CnObject {
     @SerializedName("weight")
     float weight;
 
+    public ConnectedNode objectNode() {
+        return endNode;
+    }
+
+    public ConnectedNode subjectNode() {
+        return startNode;
+    }
 }

@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A node in ConceptNet.
@@ -33,4 +34,49 @@ public class CnNode extends CnObject {
 
     @SerializedName("view")
     PaginationView paginationView;
+
+    public List<String> connectedNodes() {
+        return this.edges()
+                .stream()
+                .map(e -> (e.endNode().term().equalsIgnoreCase(id()) ? e.startNode().label() : e.endNode().label()))
+                .collect(Collectors.toList());
+
+    }
+
+    public List<String> connectedSubjectNodes() {
+        return edges()
+                .stream()
+                .filter(e -> e.objectNode().term().equalsIgnoreCase(id()))
+                .map(e -> e.objectNode().label())
+                .collect(Collectors.toList());
+
+    }
+
+    public List<String> connectedObjectNodes() {
+        return edges()
+                .stream()
+                .filter(e -> e.subjectNode().term().equalsIgnoreCase(id()))
+                .map(e -> e.startNode().label())
+                .collect(Collectors.toList());
+    }
+
+    public List<String> connectedSubjectNodes(List<RelationType> relationTypes) {
+        return edges()
+                .stream()
+                .filter(e -> e.objectNode().term().equalsIgnoreCase(id()))
+                .filter(e -> relationTypes.contains(e.relation().relationType()))
+                .map(e -> e.objectNode().label())
+                .collect(Collectors.toList());
+
+    }
+
+    public List<String> connectedObjectNodes(List<RelationType> relationTypes) {
+        return edges()
+                .stream()
+                .filter(e -> e.subjectNode().term().equalsIgnoreCase(id()))
+                .filter(e -> relationTypes.contains(e.relation().relationType()))
+                .map(e -> e.startNode().label())
+                .collect(Collectors.toList());
+    }
+
 }

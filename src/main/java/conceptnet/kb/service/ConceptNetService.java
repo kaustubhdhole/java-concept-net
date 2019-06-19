@@ -8,7 +8,10 @@ import conceptnet.kb.utilities.CnEdgeApi;
 import conceptnet.kb.utilities.CnNodeApi;
 import conceptnet.kb.utilities.CnRelatedTermsApi;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Services to query ConceptNet API.
@@ -27,28 +30,37 @@ public class ConceptNetService implements KnowledgeBaseService {
         return CnRelatedTermsApi.getRelatedTerms(phrase);
     }
 
+
+    private List<String> getHypoNyms(String phrase) {
+        Optional<CnNode> node = query(phrase);
+        if (node.isPresent()) {
+            CnNode n = node.get();
+            return n.edges().stream()
+                    .filter(r -> r.relation().relationType().equals(RelationType.IsA) && r.endNode().term().equalsIgnoreCase(n.id()))
+                    .map(r -> r.startNode().label())
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
+
     @Override
     public Optional<CnEdge> getEdge(String edgeUri) {
         return CnEdgeApi.query(edgeUri);
     }
 
+    @Override
+    public List<Integer> distanceBetween(CnNode node1, CnNode node2, List<RelationType> relationTypes) {
+        return null;
+    }
+
     public static void main(String[] args) {
-        KnowledgeBaseService knowledgeBaseService = new ConceptNetService();
-        Optional<CnNode> response = knowledgeBaseService.query("credit_card");
-        Optional<RelatedTerms> relatedTerms = knowledgeBaseService.getRelatedTerms("tea madness people");
-        Optional<CnEdge> edge = knowledgeBaseService.getEdge("[/r/Synonym/,/c/pt/rabanada/n/wn/food/,/c/en/french_toast/n/wn/food/]");
+        ConceptNetService knowledgeBaseService = new ConceptNetService();
+        String searchWord = "bank account";
+        String question = "What type of " + searchWord + "?";
+        List<String> hyperNyms = knowledgeBaseService.getHypoNyms(searchWord);
+        hyperNyms.stream().forEach(h -> System.out.println(h));
         System.out.println();
-        if (response.isPresent()) {
-            CnNode node = response.get();
-            System.out.println("Node found: " + node.id() + "\n");
-            node.edges()
-                    .stream()
-                    .filter(e -> e.relation().relationType().equals(RelationType.CapableOf))
-                    .forEach(e -> System.out.println(e.startNode().label() + " CapableOf " + e.endNode().label()));
-            System.out.println();
-        } else {
-            System.out.println("No node found.");
-        }
     }
 
 }
