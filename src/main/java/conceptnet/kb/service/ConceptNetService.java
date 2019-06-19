@@ -60,7 +60,17 @@ public class ConceptNetService implements KnowledgeBaseService {
         String question = "What type of " + searchWord + "?";
         List<String> hyperNyms = knowledgeBaseService.getHypoNyms(searchWord);
         hyperNyms.stream().forEach(h -> System.out.println(h));
+        Optional<CnNode> cnNodeOptional = knowledgeBaseService.query(searchWord);
+        cnNodeOptional.ifPresent(node -> {
+            System.out.println("***");
+            node.connectedNodes().stream().forEach(x-> System.out.println(x));
+            System.out.println("***");
+            node.connectedObjectNodes().stream().forEach(x-> System.out.println(x));
+            System.out.println("***");
+            node.connectedSubjectNodes().stream().forEach(x-> System.out.println(x));
+        });
         System.out.println();
+
     }
 
 }

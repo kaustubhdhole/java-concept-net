@@ -38,7 +38,9 @@ public class CnNode extends CnObject {
     public List<String> connectedNodes() {
         return this.edges()
                 .stream()
-                .map(e -> (e.endNode().term().equalsIgnoreCase(id()) ? e.startNode().label() : e.endNode().label()))
+                .map(e -> (e.endNode().term().equalsIgnoreCase(id()) ? e.startNode() : e.endNode()))
+                .filter(node -> node.language() != null && node.language().equalsIgnoreCase("en"))
+                .map(node -> node.label())
                 .collect(Collectors.toList());
 
     }
@@ -52,7 +54,8 @@ public class CnNode extends CnObject {
         return edges()
                 .stream()
                 .filter(e -> e.objectNode().term().equalsIgnoreCase(id()))
-                .map(e -> e.objectNode().label())
+                .filter(e -> e.subjectNode().language() != null && e.subjectNode().language().equalsIgnoreCase("en"))
+                .map(e -> e.subjectNode().label())
                 .collect(Collectors.toList());
 
     }
@@ -66,7 +69,8 @@ public class CnNode extends CnObject {
         return edges()
                 .stream()
                 .filter(e -> e.subjectNode().term().equalsIgnoreCase(id()))
-                .map(e -> e.startNode().label())
+                .filter(e -> e.objectNode().language() != null && e.objectNode().language().equalsIgnoreCase("en"))
+                .map(e -> e.objectNode().label())
                 .collect(Collectors.toList());
     }
 
@@ -75,9 +79,9 @@ public class CnNode extends CnObject {
                 .stream()
                 .filter(e -> e.objectNode().term().equalsIgnoreCase(id()))
                 .filter(e -> relationTypes.contains(e.relation().relationType()))
-                .map(e -> e.objectNode().label())
+                .filter(e -> e.subjectNode().language() != null && e.subjectNode().language().equalsIgnoreCase("en"))
+                .map(e -> e.subjectNode().label())
                 .collect(Collectors.toList());
-
     }
 
     public List<String> connectedObjectNodes(List<RelationType> relationTypes) {
@@ -85,7 +89,8 @@ public class CnNode extends CnObject {
                 .stream()
                 .filter(e -> e.subjectNode().term().equalsIgnoreCase(id()))
                 .filter(e -> relationTypes.contains(e.relation().relationType()))
-                .map(e -> e.startNode().label())
+                .filter(e -> e.objectNode().language() != null && e.objectNode().language().equalsIgnoreCase("en"))
+                .map(e -> e.objectNode().label())
                 .collect(Collectors.toList());
     }
 
