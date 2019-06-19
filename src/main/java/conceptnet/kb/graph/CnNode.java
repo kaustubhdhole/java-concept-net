@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Accessors(fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CnNode extends CnObject {
+public class CnNode extends CnObject implements ICnNode {
 
     public CnNode() {
         super();
@@ -44,6 +44,7 @@ public class CnNode extends CnObject {
         return this.id().substring(6).replace("_", " ");
     }
 
+    @Override
     public List<String> connectedNodes() {
         return this.edges()
                 .stream()
@@ -54,11 +55,8 @@ public class CnNode extends CnObject {
 
     }
 
-    /**
-     * Return all the connected nodes in which this node appears as the object.
-     *
-     * @return list of phrases for each node.
-     */
+
+    @Override
     public List<String> connectedSubjectNodes() {
         return edges()
                 .stream()
@@ -69,11 +67,8 @@ public class CnNode extends CnObject {
 
     }
 
-    /**
-     * Return all the connected nodes in which this node appears as the subject.
-     *
-     * @return list of phrases for each node.
-     */
+
+    @Override
     public List<String> connectedObjectNodes() {
         return edges()
                 .stream()
@@ -83,6 +78,7 @@ public class CnNode extends CnObject {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<String> connectedSubjectNodes(List<RelationType> relationTypes) {
         return edges()
                 .stream()
@@ -93,6 +89,7 @@ public class CnNode extends CnObject {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<String> connectedObjectNodes(List<RelationType> relationTypes) {
         return edges()
                 .stream()
@@ -103,25 +100,25 @@ public class CnNode extends CnObject {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * If thisNode is connected to any of thoseNodes.
-     *
-     * @param thoseNodes nodes we want to check for relation
-     * @return true if there is at least one relation
-     */
+
+    @Override
     public boolean isConnectedTo(List<String> thoseNodes) {
         return connectedNodes()
                 .stream()
                 .anyMatch(thisNode -> thoseNodes.contains(thisNode));
     }
 
-    /**
-     * If thisNode is loosely related to any of the mentioned thoseNodes.
-     * Here, the node is checked not only for an exact match but even for a partial 1-gram overlap.
-     *
-     * @param thoseNodes nodes we want to check for relation
-     * @return true if there is at least one relation
-     */
+
+    @Override
+    public long numberOfConnections(List<String> thoseNodes) {
+        return connectedNodes()
+                .stream()
+                .filter(thisNode -> thoseNodes.contains(thisNode))
+                .count();
+    }
+
+
+    @Override
     public boolean unigramOverlap(List<String> thoseNodes) {
         if (isConnectedTo(thoseNodes)) {
             return true;
@@ -141,12 +138,8 @@ public class CnNode extends CnObject {
         }
     }
 
-    /**
-     * If thisNode has is related to any of thoseNodes.
-     *
-     * @param thoseNodes nodes we want to check for relation
-     * @return true if there is at least one relation
-     */
+
+    @Override
     public boolean anyMatch(List<CnNode> thoseNodes) {
         return connectedNodes()
                 .stream()

@@ -21,7 +21,7 @@ public class ConceptNetServiceTest {
 
     static List<String> domainFilter = new ArrayList<>();
 
-    static String searchWord = "money transfer";
+    static String searchWord = "bank account";
 
     @BeforeClass
     public static void load() {
@@ -52,7 +52,6 @@ public class ConceptNetServiceTest {
 
     @Test
     public void domainFilteredHyponyms() {
-        String searchWord = "money transfer";
         System.out.println(searchWord);
         List<String> hyponyms = knowledgeBaseService.getHyponyms(searchWord);
         System.out.println("\nDomain filtered Hyponyms\n");

@@ -1,6 +1,6 @@
 package conceptnet.kb.graph;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * ConceptNet relations that can apply to text in any language.
@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
  *
  * @author kaustubhdholé.
  */
-@AllArgsConstructor
 public enum RelationType {
 
     RelatedTo("/r/RelatedTo", "The most general relation. There is some positive relationship between A and B, but ConceptNet can't determine what that relationship is based on the data. This was called ConceptuallyRelatedTo in ConceptNet 2 through 4. Symmetric.", "learn ↔ erudition"),
@@ -47,11 +46,32 @@ public enum RelationType {
     CausesDesire("/r/CausesDesire", "A makes someone want B.", "having no food → go to a store"),
     MadeOf("/r/MadeOf", "A is made of B.", "bottle → plastic"),
     ReceivesAction("/r/ReceivesAction", "B can be done to A.", "button → push"),
-    InstanceOf("/r/InstanceOf", "A is an example of B.", "meringue → dessert");
+    InstanceOf("/r/InstanceOf", "A is an example of B.", "meringue → dessert"),
 
+    NotDesires("/r/NotDesires", "Negative relation of Desires", true),
+    NotUsedFor("/r/NotUsedFor", "Negative relation of UsedFor", true),
+    NotCapableOf("/r/NotCapableOf", "Negative relation of Capable of", true),
+    NotHasProperty("/r/NotHasProperty", "Negative relation of HasProperty", true);
+
+    @Getter
     String uri;
     String description;
     String example;
+    @Getter
+    boolean isNegative;
+
+    RelationType(String uri, String description, String example) {
+        this.uri = uri;
+        this.description = description;
+        this.example = example;
+        this.isNegative = false;
+    }
+
+    RelationType(String uri, String description, boolean isNegative) {
+        this.uri = uri;
+        this.description = description;
+        this.isNegative = isNegative;
+    }
 
     public static RelationType fromUri(String uri) {
         if (uri.startsWith("/r/dbpedia")) {
