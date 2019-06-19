@@ -32,7 +32,8 @@ public class CnRelatedTermsApi {
 
     Optional<RelatedTerms> getRelatedTerms(String phrase, String languageCode, int offSet, int limit) {
         try {
-            var url = new URL("http://api.conceptnet.io/related/c/" + languageCode + "/" + phrase.replace(" ", "_")
+            var url = new URL("http://api.conceptnet.io/related/c/" + languageCode + "/"
+                    + phrase.replace(" ", "_").toLowerCase()
                     + "?offset=" + offSet + "&limit=" + limit);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

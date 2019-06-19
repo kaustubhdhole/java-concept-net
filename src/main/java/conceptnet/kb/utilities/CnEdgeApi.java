@@ -27,7 +27,8 @@ public class CnEdgeApi {
 
     public Optional<CnEdge> query(String phrase, int offSet, int limit) {
         try {
-            var url = new URL("http://api.conceptnet.io/a/" + "/" + phrase.replace(" ", "_")
+            var url = new URL("http://api.conceptnet.io/a/" + "/"
+                    + phrase.replace(" ", "_").toLowerCase()
                     + "?offset=" + offSet + "&limit=" + limit);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

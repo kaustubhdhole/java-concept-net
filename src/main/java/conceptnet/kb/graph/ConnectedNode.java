@@ -29,7 +29,7 @@ public class ConnectedNode {
     String type;
 
     @SerializedName("label")
-    String label;
+    String display;
 
     @SerializedName("language")
     String language;
@@ -39,4 +39,13 @@ public class ConnectedNode {
 
     @SerializedName("sense_label")
     String senseLabel;
+
+    /**
+     * /c/en/bank_account
+     *
+     * @return bank account
+     */
+    public String label() {
+        return this.term().substring(6).replace("_", " ");
+    }
 }

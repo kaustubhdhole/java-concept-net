@@ -41,7 +41,7 @@ public class CnNode extends CnObject {
      * @return bank account
      */
     public String label() {
-        return this.id().substring(5).replace("_", "");
+        return this.id().substring(6).replace("_", " ");
     }
 
     public List<String> connectedNodes() {
