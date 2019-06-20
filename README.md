@@ -54,6 +54,16 @@ public class JavaConceptNetDemo {
     }
 }
 ```
+
+To add a dependency on JavaConceptNet using Maven, use the following:
+
+```xml
+<dependency>
+    <groupId>io.github.javanlp</groupId>
+    <artifactId>java-concept-net</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
                      
 The main purpose of the repository is to build an easy and flexible to use Java client
 for quick experimentation and integration without worrying about the hassle of setting up ConceptNet.
