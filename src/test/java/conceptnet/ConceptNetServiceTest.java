@@ -21,7 +21,7 @@ public class ConceptNetServiceTest {
 
     static List<String> domainFilter = new ArrayList<>();
 
-    static String searchWord = "bank account";
+    static String searchWord = "current account";
 
     @BeforeClass
     public static void load() {
@@ -59,5 +59,12 @@ public class ConceptNetServiceTest {
                 .map(h -> knowledgeBaseService.query(h).get())
                 .filter(h -> h.unigramOverlap(domainFilter))
                 .forEach(h -> System.out.println(h.label()));
+    }
+
+    @Test
+    public void testHypernyms() {
+        List<String> cnNodeOptional = knowledgeBaseService.getHypernyms(searchWord);
+        System.out.println("\nHypernyms\n");
+        cnNodeOptional.stream().forEach(x -> System.out.println(x));
     }
 }

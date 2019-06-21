@@ -24,4 +24,6 @@ public interface KnowledgeBaseService {
     List<Integer> distanceBetween(CnNode node1, CnNode node2, List<RelationType> relationTypes);
 
     List<String> getHyponyms(String phrase);
+
+    List<String> getHypernyms(String phrase);
 }

@@ -44,6 +44,20 @@ public class ConceptNetService implements KnowledgeBaseService {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<String> getHypernyms(String phrase) {
+        Optional<CnNode> node = query(phrase);
+        if (node.isPresent()) {
+            CnNode n = node.get();
+            return n.edges().stream()
+                    .filter(r -> r.relation().relationType().equals(RelationType.IsA) && r.startNode().term().equalsIgnoreCase(n.id()))
+                    .map(r -> r.endNode().label())
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
 
     @Override
     public Optional<CnEdge> getEdge(String edgeUri) {
