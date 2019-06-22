@@ -55,10 +55,10 @@ public class ConnectedNode {
     }
 
 
-    public HeavyCnNode query() throws ConceptNetApiException {
-        Optional<CnNode> optionalNode = CnNodeApi.query(id, language);
+    public CnNode query() throws ConceptNetApiException {
+        Optional<CnNode> optionalNode = CnNodeApi.query(label(), language);
         if (optionalNode.isPresent()) {
-            return (HeavyCnNode) optionalNode.get();
+            return optionalNode.get();
         } else {
             throw new ConceptNetApiException("Missing node in the Edge");
         }

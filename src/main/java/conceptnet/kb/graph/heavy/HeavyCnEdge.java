@@ -1,13 +1,20 @@
 package conceptnet.kb.graph.heavy;
 
 import conceptnet.kb.graph.CnEdge;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author kaustubhdholé.
  */
-public class HeavyCnEdge extends CnEdge {
+@Data
+@Accessors(fluent = true)
+public class HeavyCnEdge {
 
-    HeavyCnNode startNode;
+    CnEdge lightEdge;
 
-    HeavyCnNode endNode;
+    public HeavyCnEdge(CnEdge cnEdge) {
+        this.lightEdge = cnEdge;
+    }
+
 }

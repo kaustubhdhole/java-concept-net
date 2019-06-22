@@ -1,6 +1,10 @@
 package conceptnet;
 
+import com.google.common.graph.MutableNetwork;
 import conceptnet.kb.graph.CnNode;
+import conceptnet.kb.graph.heavy.ConceptNetGraph;
+import conceptnet.kb.graph.heavy.HeavyCnEdge;
+import conceptnet.kb.graph.heavy.HeavyCnNode;
 import conceptnet.kb.service.ConceptNetService;
 import conceptnet.kb.service.KnowledgeBaseService;
 import org.junit.BeforeClass;
@@ -66,5 +70,15 @@ public class ConceptNetServiceTest {
         List<String> cnNodeOptional = knowledgeBaseService.getHypernyms(searchWord);
         System.out.println("\nHypernyms\n");
         cnNodeOptional.stream().forEach(x -> System.out.println(x));
+    }
+
+    //@Test
+    public void testGraph(){
+        Optional<CnNode> cnNodeOptional = knowledgeBaseService.query(searchWord);
+        if (cnNodeOptional.isPresent()) {
+            ConceptNetGraph conceptNetGraph = new ConceptNetGraph(cnNodeOptional.get());
+            MutableNetwork<HeavyCnNode, HeavyCnEdge> network = conceptNetGraph.getNetwork();
+            System.out.println();
+        }
     }
 }

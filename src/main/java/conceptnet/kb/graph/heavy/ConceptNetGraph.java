@@ -24,7 +24,7 @@ public class ConceptNetGraph {
             .expectedEdgeCount(100000)
             .build();
 
-    ConceptNetGraph(HeavyCnNode rootNode) {
+    public ConceptNetGraph(CnNode rootNode) {
         populate(rootNode, 3);
     }
 
@@ -36,17 +36,17 @@ public class ConceptNetGraph {
         final int currentDepth = depth;
         List<CnEdge> edges = node.edges();
         edges.stream()
-                .map(e -> {
+                .forEach(e -> {
                     ConnectedNode thatConnection = (e.endNode().term().equalsIgnoreCase(node.id()) ? e.startNode() : e.endNode());
-                    HeavyCnNode thatNode;
+                    CnNode thatNode;
                     try {
                         thatNode = thatConnection.query();
-                    } catch (ConceptNetApiException e1) {
-                        thatNode = new HeavyCnNode();
+                        network.addEdge(new HeavyCnNode(node), new HeavyCnNode(thatNode), new HeavyCnEdge(e));
+                        populate(thatNode, currentDepth - 1);
+                    } catch (ConceptNetApiException | IllegalArgumentException e1) {
                         e1.printStackTrace();
                     }
-                    network.addEdge((HeavyCnNode) node, thatNode, (HeavyCnEdge) e);
-                    return thatNode;
-                }).forEach(heavyCnNode -> populate(heavyCnNode, currentDepth - 1));
+                });
     }
+
 }
