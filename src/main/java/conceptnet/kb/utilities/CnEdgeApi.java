@@ -25,6 +25,8 @@ public class CnEdgeApi {
         return query(phrase, 0, 1000);
     }
 
+    //TODO: edge input can also accept 3 strings
+    // http://api.conceptnet.io/a/%5B/r/UsedFor/,/c/en/example/,/c/en/explain/%5D
     public Optional<CnEdge> query(String phrase, int offSet, int limit) {
         try {
             var url = new URL("http://api.conceptnet.io/a/" + "/"
@@ -50,3 +52,7 @@ public class CnEdgeApi {
         return Optional.empty();
     }
 }
+// Enum of all the sources of ConceptNet
+//TODO: APIs to be added -->  all statements collected by Open Mind Common Sense about the Spanish word hablar
+// http://conceptnet.io/query?source=/s/contributor/omcs&node=/c/es/hablar
+//
