@@ -74,7 +74,6 @@ public class CnNode extends CnObject implements ICnNode {
 
     }
 
-
     @Override
     public List<String> connectedSubjectNodes() {
         return edges()
@@ -85,7 +84,6 @@ public class CnNode extends CnObject implements ICnNode {
                 .collect(Collectors.toList());
 
     }
-
 
     @Override
     public List<String> connectedObjectNodes() {
@@ -127,7 +125,6 @@ public class CnNode extends CnObject implements ICnNode {
                 .anyMatch(thisNode -> thoseNodes.contains(thisNode));
     }
 
-
     @Override
     public long numberOfConnections(List<String> thoseNodes) {
         return connectedNodes()
@@ -135,7 +132,6 @@ public class CnNode extends CnObject implements ICnNode {
                 .filter(thisNode -> thoseNodes.contains(thisNode))
                 .count();
     }
-
 
     @Override
     public boolean unigramOverlap(List<String> thoseNodes) {
@@ -156,7 +152,6 @@ public class CnNode extends CnObject implements ICnNode {
                     });
         }
     }
-
 
     @Override
     public boolean anyMatch(List<CnNode> thoseNodes) {

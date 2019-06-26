@@ -19,7 +19,9 @@
 
 package conceptnet;
 
+import conceptnet.kb.graph.CnEdge;
 import conceptnet.kb.graph.CnNode;
+import conceptnet.kb.graph.RelationType;
 import conceptnet.kb.service.ConceptNetService;
 import conceptnet.kb.service.KnowledgeBaseService;
 import org.junit.BeforeClass;
@@ -85,5 +87,12 @@ public class ConceptNetServiceTest {
         List<String> cnNodeOptional = knowledgeBaseService.getHypernyms(searchWord);
         System.out.println("\nHypernyms\n");
         cnNodeOptional.stream().forEach(x -> System.out.println(x));
+    }
+
+    @Test
+    public void testEdge() {
+        Optional<CnEdge> edge = knowledgeBaseService.getEdge(RelationType.UsedFor,"example", "explain");
+        System.out.println("\nEdges\n");
+        edge.ifPresent(e -> System.out.println(e.relation().label() + "(" + e.startNode().label() + "," + e.endNode().label() + ")"));
     }
 }

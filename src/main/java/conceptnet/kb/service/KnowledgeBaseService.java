@@ -34,13 +34,45 @@ import java.util.Optional;
  */
 public interface KnowledgeBaseService {
 
+    /**
+     * Get the ConceptNet node associated with a word or a commonly occurring phrase.
+     *
+     * @param phrase "checking account"
+     */
     Optional<CnNode> query(String phrase);
 
+    /**
+     * Retrieve terms similar in the ConceptNet embedding space to a word or a commonly occurring phrase.
+     *
+     * @param phrase "bambaiyya"
+     */
     Optional<RelatedTerms> getRelatedTerms(String phrase);
 
-    Optional<CnEdge> getEdge(String edgeUri);
+    /**
+     * Query if ConceptNet has a particular edge between two existing concepts
+     *
+     * @param relationType {@link RelationType}
+     * @param phrase1      "bank account"
+     * @param phrase2      "savings account"
+     * @return "The edge if both the node exists and the edge exists in ConceptNet"
+     */
+    Optional<CnEdge> getEdge(RelationType relationType, String phrase1, String phrase2);
 
+    /**
+     * Get labels of "end" nodes (or "object" nodes) having a {@link RelationType IsA relationship} with the user's given "start" node {or the "subject" node}
+     * (if there is a valid "start" node corresponding to the given phrase )
+     *
+     * @param phrase "bank account"
+     * @return "checking account"
+     */
     List<String> getHyponyms(String phrase);
 
+    /**
+     * Get labels of "start" nodes (or "subject" nodes) having a {@link RelationType IsA relationship} with the user's given "end" node {or the "object" node}
+     * (if there is a valid "end" node corresponding to the given phrase)
+     *
+     * @param phrase "bank account"
+     * @return "checking account"
+     */
     List<String> getHypernyms(String phrase);
 }

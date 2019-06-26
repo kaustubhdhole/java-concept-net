@@ -21,6 +21,8 @@ package conceptnet.kb.utilities;
 
 import com.google.gson.Gson;
 import conceptnet.kb.graph.CnEdge;
+import conceptnet.kb.graph.CnNode;
+import conceptnet.kb.graph.RelationType;
 import lombok.Cleanup;
 import lombok.experimental.UtilityClass;
 import lombok.var;
@@ -40,14 +42,21 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class CnEdgeApi {
 
-    public Optional<CnEdge> query(String phrase) {
-        return query(phrase, 0, 1000);
+    public Optional<CnEdge> query(RelationType relationType, String phrase1, String phrase2) {
+        return query(relationType, phrase1, phrase2, 0, 1000);
     }
 
-    public Optional<CnEdge> query(String phrase, int offSet, int limit) {
+    public Optional<CnEdge> query(RelationType relationType, String phrase1, String phrase2, int offSet, int limit) {
         try {
-            var url = new URL("http://api.conceptnet.io/a/" + "/"
-                    + phrase.replace(" ", "_").toLowerCase()
+            Optional<CnNode> node1 = CnNodeApi.query(phrase1);
+            Optional<CnNode> node2 = CnNodeApi.query(phrase2);
+            if (!node1.isPresent() || !node2.isPresent()) {
+                throw new ConceptNetApiException("No ConceptNet node for one of the nodes exists=.");
+            }
+            var url = new URL("http://api.conceptnet.io/a/"
+                    + "%5B" + relationType.getUri() + "/,"
+                    + node1.get().id() + "/,"
+                    + node2.get().id() + "/" +"%5D"
                     + "?offset=" + offSet + "&limit=" + limit);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

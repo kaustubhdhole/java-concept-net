@@ -99,8 +99,4 @@ public enum RelationType {
         return RelationType.valueOf(uri.substring(3));
     }
 
-    public static void main(String[] args) {
-        RelationType relationType = RelationType.valueOf("RelatedTo");
-        relationType = fromUri("/r/CausesDesire");
-    }
 }

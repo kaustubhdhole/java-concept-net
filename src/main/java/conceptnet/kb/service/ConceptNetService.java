@@ -77,10 +77,9 @@ public class ConceptNetService implements KnowledgeBaseService {
         return new ArrayList<>();
     }
 
-
     @Override
-    public Optional<CnEdge> getEdge(String edgeUri) {
-        return CnEdgeApi.query(edgeUri);
+    public Optional<CnEdge> getEdge(RelationType relationType, String phrase1, String phrase2) {
+        return CnEdgeApi.query(relationType, phrase1, phrase2);
     }
 
 }
