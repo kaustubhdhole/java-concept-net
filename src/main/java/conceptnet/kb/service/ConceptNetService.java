@@ -83,9 +83,4 @@ public class ConceptNetService implements KnowledgeBaseService {
         return CnEdgeApi.query(edgeUri);
     }
 
-    @Override
-    public List<Integer> distanceBetween(CnNode node1, CnNode node2, List<RelationType> relationTypes) {
-        return null;
-    }
-
 }
