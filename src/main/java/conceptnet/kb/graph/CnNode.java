@@ -119,7 +119,7 @@ public class CnNode extends CnObject implements ICnNode {
 
 
     @Override
-    public boolean isConnectedTo(List<String> thoseNodes) {
+    public boolean isConnectedToAnyOf(List<String> thoseNodes) {
         return connectedNodes()
                 .stream()
                 .anyMatch(thisNode -> thoseNodes.contains(thisNode));
@@ -135,7 +135,7 @@ public class CnNode extends CnObject implements ICnNode {
 
     @Override
     public boolean unigramOverlap(List<String> thoseNodes) {
-        if (isConnectedTo(thoseNodes)) {
+        if (isConnectedToAnyOf(thoseNodes)) {
             return true;
         } else {
             return connectedNodes()

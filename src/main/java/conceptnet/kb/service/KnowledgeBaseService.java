@@ -75,4 +75,13 @@ public interface KnowledgeBaseService {
      * @return "checking account"
      */
     List<String> getHypernyms(String phrase);
+
+    /**
+     * Get labels of "start" nodes (or "subject" nodes) having a {@link RelationType IsA relationship} with the user's given "end" node {or the "object" node}
+     * (if there is a valid "end" node corresponding to the given phrase)
+     *
+     * @param phrase "car"
+     * @return "wheel", "seat"
+     */
+    List<String> getMeronyms(String phrase);
 }

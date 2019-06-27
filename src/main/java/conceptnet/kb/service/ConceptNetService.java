@@ -78,6 +78,20 @@ public class ConceptNetService implements KnowledgeBaseService {
     }
 
     @Override
+    public List<String> getMeronyms(String phrase) {
+        Optional<CnNode> node = query(phrase);
+        if (node.isPresent()) {
+            CnNode n = node.get();
+            return n.edges().stream()
+                    .filter(r -> r.relation().relationType().equals(RelationType.PartOf) && r.endNode().term().equalsIgnoreCase(n.id()))
+                    .map(r -> r.startNode().label())
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public Optional<CnEdge> getEdge(RelationType relationType, String phrase1, String phrase2) {
         return CnEdgeApi.query(relationType, phrase1, phrase2);
     }

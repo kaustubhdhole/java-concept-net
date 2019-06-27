@@ -71,7 +71,7 @@ public interface ICnNode {
      * @param thoseNodes nodes we want to check for relation
      * @return true if there is at least one relation
      */
-    boolean isConnectedTo(List<String> thoseNodes);
+    boolean isConnectedToAnyOf(List<String> thoseNodes);
 
     /**
      * If thisNode is connected to any of thoseNodes.
