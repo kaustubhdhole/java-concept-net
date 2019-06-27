@@ -42,7 +42,7 @@ public class ConceptNetServiceTest {
 
     static List<String> domainFilter = new ArrayList<>();
 
-    static String searchWord = "current account";
+    static String searchWord = "speech";
 
     @BeforeClass
     public static void load() {
@@ -57,7 +57,11 @@ public class ConceptNetServiceTest {
         Optional<CnNode> cnNodeOptional = knowledgeBaseService.query(searchWord);
         if (cnNodeOptional.isPresent()) {
             CnNode cnNode = cnNodeOptional.get();
-            boolean isDirectlyConnected = cnNode.isConnectedTo(domainFilter);
+            cnNode.edges().stream().filter(e->e.surfaceText()!=null)
+                    .filter(e->e.startNode().language().equalsIgnoreCase("en"))
+                    .filter(e->e.endNode().language().equalsIgnoreCase("en"))
+                    .forEach(e-> System.out.println(e.surfaceText()));
+            boolean isDirectlyConnected = cnNode.isConnectedToAnyOf(domainFilter);
             System.out.println(isDirectlyConnected);
             boolean unigramOverlap = cnNode.unigramOverlap(domainFilter);
             System.out.println(unigramOverlap);
