@@ -28,6 +28,8 @@ import lombok.NonNull;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Optional;
+
 /**
  * Node references for edges in conceptNet.
  *
@@ -58,6 +60,17 @@ public class ConnectedNode {
 
     @SerializedName("sense_label")
     String senseLabel;
+
+    /**
+     * Returns the WordNet syntactic category of the node if present in ConceptNet:
+     *
+     * @return (n)noun (v)verb (a)adjective and adverb(r)
+     */
+    public Optional<String> wnSyntacticCategory() {
+        if (null != senseLabel) {
+            return Optional.of(senseLabel.split(",")[0].trim());
+        } else return Optional.empty();
+    }
 
     /**
      * /c/en/bank_account

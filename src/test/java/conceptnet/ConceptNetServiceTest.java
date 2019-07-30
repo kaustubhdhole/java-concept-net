@@ -38,11 +38,11 @@ import java.util.Optional;
  */
 public class ConceptNetServiceTest {
 
-    private static KnowledgeBaseService knowledgeBaseService;
+    private static KnowledgeBaseService<CnNode> knowledgeBaseService;
 
     static List<String> domainFilter = new ArrayList<>();
 
-    static String searchWord = "speech";
+    static String searchWord = "drinking bout";
 
     @BeforeClass
     public static void load() {

@@ -32,7 +32,7 @@ import java.util.Optional;
  *
  * @author kaustubhdholé.
  */
-public interface KnowledgeBaseService {
+public interface KnowledgeBaseService<NodeT> {
 
     /**
      * Get the ConceptNet node associated with a word or a commonly occurring phrase.
@@ -68,13 +68,31 @@ public interface KnowledgeBaseService {
     List<String> getHyponyms(String phrase);
 
     /**
+     * Get labels of "end" nodes (or "object" nodes) having a {@link RelationType IsA relationship} with the user's given "start" node {or the "subject" node}
+     * (if there is a valid "start" node corresponding to the given phrase )
+     *
+     * @param "bank account"
+     * @return "checking account"
+     */
+    List<String> getHyponyms(NodeT node);
+
+    /**
      * Get labels of "start" nodes (or "subject" nodes) having a {@link RelationType IsA relationship} with the user's given "end" node {or the "object" node}
      * (if there is a valid "end" node corresponding to the given phrase)
      *
-     * @param phrase "bank account"
-     * @return "checking account"
+     * @param phrase "checking account"
+     * @return "bank account"
      */
     List<String> getHypernyms(String phrase);
+
+    /**
+     * Get labels of "start" nodes (or "subject" nodes) having a {@link RelationType IsA relationship} with the user's given "end" node {or the "object" node}
+     * (if there is a valid "end" node corresponding to the given phrase)
+     *
+     * @param "checking account"
+     * @return "bank account"
+     */
+    List<String> getHypernyms(NodeT node);
 
     /**
      * Get labels of "start" nodes (or "subject" nodes) having a {@link RelationType IsA relationship} with the user's given "end" node {or the "object" node}
@@ -84,4 +102,22 @@ public interface KnowledgeBaseService {
      * @return "wheel", "seat"
      */
     List<String> getMeronyms(String phrase);
+
+    /**
+     * Get labels of nodes having a "relationType" relationship relation with the node found from phrase.
+     *
+     * @param "checking account"
+     * @param "is       A"
+     * @return "bank account"
+     */
+    List<String> getRelations(String phrase, List<RelationType> relationTypes);
+
+    /**
+     * Get labels of nodes having a "relationType" relationship relation with the node found from phrase.
+     *
+     * @param "checking account"
+     * @param "is       A"
+     * @return "bank account"
+     */
+    List<String> getRelations(CnNode node, List<RelationType> relationTypes);
 }

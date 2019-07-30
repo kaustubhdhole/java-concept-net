@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  *
  * @author kaustubhdholé.
  */
-public class ConceptNetService implements KnowledgeBaseService {
+public class ConceptNetService implements KnowledgeBaseService<CnNode> {
 
     @Override
     public Optional<CnNode> query(String phrase) {
@@ -54,13 +54,18 @@ public class ConceptNetService implements KnowledgeBaseService {
         Optional<CnNode> node = query(phrase);
         if (node.isPresent()) {
             CnNode n = node.get();
-            return n.edges().stream()
-                    .filter(r -> r.relation().relationType().equals(RelationType.IsA) && r.endNode().term().equalsIgnoreCase(n.id()))
-                    .map(r -> r.startNode().label())
-                    .distinct()
-                    .collect(Collectors.toList());
+            return getHyponyms(n);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getHyponyms(CnNode node) {
+        return node.edges().stream()
+                .filter(r -> r.relation().relationType().equals(RelationType.IsA) && r.endNode().term().equalsIgnoreCase(node.id()))
+                .map(r -> r.startNode().label())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -68,13 +73,18 @@ public class ConceptNetService implements KnowledgeBaseService {
         Optional<CnNode> node = query(phrase);
         if (node.isPresent()) {
             CnNode n = node.get();
-            return n.edges().stream()
-                    .filter(r -> r.relation().relationType().equals(RelationType.IsA) && r.startNode().term().equalsIgnoreCase(n.id()))
-                    .map(r -> r.endNode().label())
-                    .distinct()
-                    .collect(Collectors.toList());
+            return getHypernyms(n);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getHypernyms(CnNode node) {
+        return node.edges().stream()
+                .filter(r -> r.relation().relationType().equals(RelationType.IsA) && r.startNode().term().equalsIgnoreCase(node.id()))
+                .map(r -> r.endNode().label())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -89,6 +99,21 @@ public class ConceptNetService implements KnowledgeBaseService {
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getRelations(String phrase, List<RelationType> relationTypes) {
+        Optional<CnNode> node = query(phrase);
+        if (node.isPresent()) {
+            CnNode n = node.get();
+            return getRelations(n, relationTypes);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getRelations(CnNode node, List<RelationType> relationTypes) {
+        return node.connectedObjectNodes(relationTypes);
     }
 
     @Override
