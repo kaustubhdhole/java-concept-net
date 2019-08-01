@@ -27,6 +27,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 @Accessors(fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CnNode extends CnObject implements ICnNode {
+public class CnNode extends CnObject implements ICnNode, Serializable {
 
     public CnNode() {
         super();

@@ -27,6 +27,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import sun.security.krb5.internal.crypto.Aes128;
+
+import java.io.Serializable;
 
 /**
  * One of the 40 types of relation an edge holds between two particular nodes.
@@ -38,7 +41,7 @@ import lombok.experimental.FieldDefaults;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CnRelation {
+public class CnRelation implements Serializable {
 
     @NonNull
     @SerializedName("@id")

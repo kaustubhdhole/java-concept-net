@@ -27,6 +27,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ import java.util.List;
 @Accessors(fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CnEdge extends CnObject {
+public class CnEdge extends CnObject implements Serializable {
 
     public CnEdge() {
         super();

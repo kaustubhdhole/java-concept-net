@@ -28,6 +28,8 @@ import lombok.NonNull;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
+
 /**
  * A generic model class for conceptNet API calls.
  *
@@ -38,7 +40,7 @@ import lombok.experimental.FieldDefaults;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CnObject {
+public class CnObject implements Serializable {
 
     /**
      * A unique URI for the assertion being expressed

@@ -27,6 +27,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
+
 /**
  * Source of information: Wordnet RDF, Wikipedia, FreeBase, etc.
  *
@@ -37,7 +39,7 @@ import lombok.experimental.FieldDefaults;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Source {
+public class Source implements Serializable {
 
     @SerializedName("@id")
     String id;

@@ -24,6 +24,7 @@ import conceptnet.kb.graph.CnNode;
 import conceptnet.kb.graph.RelationType;
 import conceptnet.kb.service.ConceptNetService;
 import conceptnet.kb.service.KnowledgeBaseService;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -66,6 +67,14 @@ public class ConceptNetServiceTest {
             boolean unigramOverlap = cnNode.unigramOverlap(domainFilter);
             System.out.println(unigramOverlap);
         }
+    }
+
+    @Test
+    public void testCleanCopy() {
+        CnNode original = knowledgeBaseService.query("john").get();
+        CnNode cleanCopy = knowledgeBaseService.cleanCopy(original);
+        Assert.assertEquals(541, original.edges().size() );
+        Assert.assertEquals(535, cleanCopy.edges().size() );
     }
 
     @Test

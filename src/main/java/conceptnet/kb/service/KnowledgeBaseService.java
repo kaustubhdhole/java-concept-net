@@ -50,6 +50,11 @@ public interface KnowledgeBaseService<NodeT> {
     List<ConnectedNode> getCleanConnections(CnNode node);
 
     /**
+     * Creates a copy of the cnNode by filtering out the edges which are profane.
+     */
+    CnNode cleanCopy(CnNode cnNode);
+
+    /**
      * Return all edges which are clean (i.e. have passed the profanity filter).
      * <p>
      * Note that an edge is clean if the connected node is clean. (So, users still can query with profane words.)
