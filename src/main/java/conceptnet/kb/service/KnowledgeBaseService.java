@@ -21,6 +21,7 @@ package conceptnet.kb.service;
 
 import conceptnet.kb.graph.CnEdge;
 import conceptnet.kb.graph.CnNode;
+import conceptnet.kb.graph.ConnectedNode;
 import conceptnet.kb.graph.RelatedTerms;
 import conceptnet.kb.graph.RelationType;
 
@@ -40,6 +41,22 @@ public interface KnowledgeBaseService<NodeT> {
      * @param phrase "checking account"
      */
     Optional<CnNode> query(String phrase);
+
+    /**
+     * Return all the connections which are clean (i.e. have passed the profanity filter)
+     *
+     * @return all the edges
+     */
+    List<ConnectedNode> getCleanConnections(CnNode node);
+
+    /**
+     * Return all edges which are clean (i.e. have passed the profanity filter).
+     * <p>
+     * Note that an edge is clean if the connected node is clean. (So, users still can query with profane words.)
+     *
+     * @return all the edges
+     */
+    List<CnEdge> getCleanEdges(CnNode node);
 
     /**
      * Retrieve terms similar in the ConceptNet embedding space to a word or a commonly occurring phrase.

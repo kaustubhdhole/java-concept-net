@@ -21,8 +21,10 @@ package conceptnet.kb.service;
 
 import conceptnet.kb.graph.CnEdge;
 import conceptnet.kb.graph.CnNode;
+import conceptnet.kb.graph.ConnectedNode;
 import conceptnet.kb.graph.RelatedTerms;
 import conceptnet.kb.graph.RelationType;
+import conceptnet.kb.profanity.ProfanityFilter;
 import conceptnet.kb.utilities.CnEdgeApi;
 import conceptnet.kb.utilities.CnNodeApi;
 import conceptnet.kb.utilities.CnRelatedTermsApi;
@@ -30,6 +32,7 @@ import conceptnet.kb.utilities.CnRelatedTermsApi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -39,9 +42,32 @@ import java.util.stream.Collectors;
  */
 public class ConceptNetService implements KnowledgeBaseService<CnNode> {
 
+    private Predicate<ConnectedNode> profanityFilter = new ProfanityFilter();
+
     @Override
     public Optional<CnNode> query(String phrase) {
         return CnNodeApi.query(phrase);
+    }
+
+    @Override
+    public List<ConnectedNode> getCleanConnections(CnNode node) {
+        return node.connectedNodes()
+                .stream()
+                .filter(profanityFilter)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CnEdge> getCleanEdges(CnNode node) {
+        return node.edges()
+                .stream()
+                .filter(edge -> isCleanEdge(edge, node))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isCleanEdge(CnEdge e, CnNode thisNode) {
+        ConnectedNode thatNode = (e.endNode().term().equalsIgnoreCase(thisNode.id()) ? e.startNode() : e.endNode());
+        return profanityFilter.test(thatNode);
     }
 
     @Override

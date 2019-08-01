@@ -54,7 +54,7 @@ public class ConceptNetServiceTest {
 
     @Test
     public void testRelatedTerms() {
-        Optional<CnNode> cnNodeOptional = knowledgeBaseService.query(searchWord);
+        Optional<CnNode> cnNodeOptional = knowledgeBaseService.query("john");
         if (cnNodeOptional.isPresent()) {
             CnNode cnNode = cnNodeOptional.get();
             cnNode.edges().stream().filter(e->e.surfaceText()!=null)

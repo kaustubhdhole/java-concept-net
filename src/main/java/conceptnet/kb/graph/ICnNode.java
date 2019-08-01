@@ -33,21 +33,21 @@ public interface ICnNode {
      *
      * @return display term for each node
      */
-    List<String> connectedNodes();
+    List<ConnectedNode> connectedNodes();
 
     /**
      * Return all the connected nodes in which this node appears as the object.
      *
      * @return list of phrases for each node.
      */
-    List<String> connectedSubjectNodes();
+    List<ConnectedNode> connectedSubjectNodes();
 
     /**
      * Return all the connected nodes in which this node appears as the subject.
      *
      * @return list of phrases for each node.
      */
-    List<String> connectedObjectNodes();
+    List<ConnectedNode> connectedObjectNodes();
 
     /**
      * Return all the nodes connected with one of the relationTypes

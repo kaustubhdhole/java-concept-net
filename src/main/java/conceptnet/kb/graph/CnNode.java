@@ -64,34 +64,33 @@ public class CnNode extends CnObject implements ICnNode {
     }
 
     @Override
-    public List<String> connectedNodes() {
+    public List<ConnectedNode> connectedNodes() {
         return this.edges()
                 .stream()
                 .map(e -> (e.endNode().term().equalsIgnoreCase(id()) ? e.startNode() : e.endNode()))
                 .filter(node -> node.language() != null && node.language().equalsIgnoreCase("en"))
-                .map(node -> node.label())
                 .collect(Collectors.toList());
 
     }
 
     @Override
-    public List<String> connectedSubjectNodes() {
+    public List<ConnectedNode> connectedSubjectNodes() {
         return edges()
                 .stream()
                 .filter(e -> e.objectNode().term().equalsIgnoreCase(id()))
                 .filter(e -> e.subjectNode().language() != null && e.subjectNode().language().equalsIgnoreCase("en"))
-                .map(e -> e.subjectNode().label())
+                .map(e -> e.subjectNode())
                 .collect(Collectors.toList());
 
     }
 
     @Override
-    public List<String> connectedObjectNodes() {
+    public List<ConnectedNode> connectedObjectNodes() {
         return edges()
                 .stream()
                 .filter(e -> e.subjectNode().term().equalsIgnoreCase(id()))
                 .filter(e -> e.objectNode().language() != null && e.objectNode().language().equalsIgnoreCase("en"))
-                .map(e -> e.objectNode().label())
+                .map(e -> e.objectNode())
                 .collect(Collectors.toList());
     }
 
@@ -140,6 +139,7 @@ public class CnNode extends CnObject implements ICnNode {
         } else {
             return connectedNodes()
                     .stream()
+                    .map(n -> n.label())
                     .anyMatch(thisNode -> {
                         if (thisNode.contains(" ")) {
                             for (String word : thisNode.split(" ")) {
