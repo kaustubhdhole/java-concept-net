@@ -43,7 +43,10 @@ import java.io.Serializable;
 public class CnObject implements Serializable {
 
     /**
-     * A unique URI for the assertion being expressed
+     * A unique URI for the assertion being expressed.
+     * <p>
+     * Unicode normalized in NFKC form using Python’s unicodedata implementation,
+     * lowercased, and split into non-punctuation tokens using the tokenizer in the Python package wordfreq
      */
     @NonNull
     @SerializedName("@id")

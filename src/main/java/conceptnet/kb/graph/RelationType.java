@@ -20,14 +20,16 @@
 package conceptnet.kb.graph;
 
 import lombok.Getter;
-import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 /**
  * ConceptNet relations that can apply to text in any language.
  * https://github.com/commonsense/conceptnet5/wiki/Relations
  * <p>
  * These generalized relations are similar in purpose to WordNet’s relations such as hyponym and meronym,
- * as well as to the qualia of the Generative Lex- icon theory (Pustejovsky 1991)
+ * as well as to the qualia of the Generative Lex- icon theory (Pustejovsky 1991).
+ * <p>
+ * Relations with specific semantics, such as UsedFor and HasPrerequisite,
+ * tend to connect common words and phrases, while rarer words are connected by more general relations such as Synonym and RelatedTo.
  *
  * @author kaustubhdholé.
  */
