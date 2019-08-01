@@ -21,6 +21,7 @@ package conceptnet;
 
 import conceptnet.kb.graph.CnEdge;
 import conceptnet.kb.graph.CnNode;
+import conceptnet.kb.graph.ConnectedNode;
 import conceptnet.kb.graph.RelationType;
 import conceptnet.kb.service.ConceptNetService;
 import conceptnet.kb.service.KnowledgeBaseService;
@@ -39,7 +40,7 @@ import java.util.Optional;
  */
 public class ConceptNetServiceTest {
 
-    private static KnowledgeBaseService<CnNode> knowledgeBaseService;
+    private static KnowledgeBaseService<CnNode, CnEdge, ConnectedNode> knowledgeBaseService;
 
     static List<String> domainFilter = new ArrayList<>();
 
@@ -58,10 +59,10 @@ public class ConceptNetServiceTest {
         Optional<CnNode> cnNodeOptional = knowledgeBaseService.query("john");
         if (cnNodeOptional.isPresent()) {
             CnNode cnNode = cnNodeOptional.get();
-            cnNode.edges().stream().filter(e->e.surfaceText()!=null)
-                    .filter(e->e.startNode().language().equalsIgnoreCase("en"))
-                    .filter(e->e.endNode().language().equalsIgnoreCase("en"))
-                    .forEach(e-> System.out.println(e.surfaceText()));
+            cnNode.edges().stream().filter(e -> e.surfaceText() != null)
+                    .filter(e -> e.startNode().language().equalsIgnoreCase("en"))
+                    .filter(e -> e.endNode().language().equalsIgnoreCase("en"))
+                    .forEach(e -> System.out.println(e.surfaceText()));
             boolean isDirectlyConnected = cnNode.isConnectedToAnyOf(domainFilter);
             System.out.println(isDirectlyConnected);
             boolean unigramOverlap = cnNode.unigramOverlap(domainFilter);
@@ -73,8 +74,8 @@ public class ConceptNetServiceTest {
     public void testCleanCopy() {
         CnNode original = knowledgeBaseService.query("john").get();
         CnNode cleanCopy = knowledgeBaseService.cleanCopy(original);
-        Assert.assertEquals(541, original.edges().size() );
-        Assert.assertEquals(535, cleanCopy.edges().size() );
+        Assert.assertEquals(541, original.edges().size());
+        Assert.assertEquals(535, cleanCopy.edges().size());
     }
 
     @Test
@@ -104,7 +105,7 @@ public class ConceptNetServiceTest {
 
     @Test
     public void testEdge() {
-        Optional<CnEdge> edge = knowledgeBaseService.getEdge(RelationType.UsedFor,"example", "explain");
+        Optional<CnEdge> edge = knowledgeBaseService.getEdge(RelationType.UsedFor, "example", "explain");
         System.out.println("\nEdges\n");
         edge.ifPresent(e -> System.out.println(e.relation().label() + "(" + e.startNode().label() + "," + e.endNode().label() + ")"));
     }

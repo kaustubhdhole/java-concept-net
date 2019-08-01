@@ -19,9 +19,6 @@
 
 package conceptnet.kb.service;
 
-import conceptnet.kb.graph.CnEdge;
-import conceptnet.kb.graph.CnNode;
-import conceptnet.kb.graph.ConnectedNode;
 import conceptnet.kb.graph.RelatedTerms;
 import conceptnet.kb.graph.RelationType;
 
@@ -33,26 +30,26 @@ import java.util.Optional;
  *
  * @author kaustubhdholé.
  */
-public interface KnowledgeBaseService<NodeT> {
+public interface KnowledgeBaseService<NodeT, EdgeT, NeighbourT> {
 
     /**
      * Get the ConceptNet node associated with a word or a commonly occurring phrase.
      *
      * @param phrase "checking account"
      */
-    Optional<CnNode> query(String phrase);
+    Optional<NodeT> query(String phrase);
 
     /**
      * Return all the connections which are clean (i.e. have passed the profanity filter)
      *
      * @return all the edges
      */
-    List<ConnectedNode> getCleanConnections(CnNode node);
+    List<NeighbourT> getCleanConnections(NodeT node);
 
     /**
      * Creates a copy of the cnNode by filtering out the edges which are profane.
      */
-    CnNode cleanCopy(CnNode cnNode);
+    NodeT cleanCopy(NodeT cnNode);
 
     /**
      * Return all edges which are clean (i.e. have passed the profanity filter).
@@ -61,7 +58,7 @@ public interface KnowledgeBaseService<NodeT> {
      *
      * @return all the edges
      */
-    List<CnEdge> getCleanEdges(CnNode node);
+    List<EdgeT> getCleanEdges(NodeT node);
 
     /**
      * Retrieve terms similar in the ConceptNet embedding space to a word or a commonly occurring phrase.
@@ -78,7 +75,7 @@ public interface KnowledgeBaseService<NodeT> {
      * @param phrase2      "savings account"
      * @return "The edge if both the node exists and the edge exists in ConceptNet"
      */
-    Optional<CnEdge> getEdge(RelationType relationType, String phrase1, String phrase2);
+    Optional<EdgeT> getEdge(RelationType relationType, String phrase1, String phrase2);
 
     /**
      * Get labels of "end" nodes (or "object" nodes) having a {@link RelationType IsA relationship} with the user's given "start" node {or the "subject" node}
@@ -141,5 +138,5 @@ public interface KnowledgeBaseService<NodeT> {
      * @param "is       A"
      * @return "bank account"
      */
-    List<String> getRelations(CnNode node, List<RelationType> relationTypes);
+    List<String> getRelations(NodeT node, List<RelationType> relationTypes);
 }

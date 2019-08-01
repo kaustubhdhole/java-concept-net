@@ -22,7 +22,6 @@ package conceptnet.kb.service;
 import conceptnet.kb.graph.CnEdge;
 import conceptnet.kb.graph.CnNode;
 import conceptnet.kb.graph.ConnectedNode;
-import conceptnet.kb.graph.ICnNode;
 import conceptnet.kb.graph.RelatedTerms;
 import conceptnet.kb.graph.RelationType;
 import conceptnet.kb.profanity.ProfanityFilter;
@@ -42,7 +41,7 @@ import java.util.stream.Collectors;
  *
  * @author kaustubhdholé.
  */
-public class ConceptNetService implements KnowledgeBaseService<CnNode> {
+public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, ConnectedNode> {
 
     private Predicate<ConnectedNode> profanityFilter = new ProfanityFilter();
 
