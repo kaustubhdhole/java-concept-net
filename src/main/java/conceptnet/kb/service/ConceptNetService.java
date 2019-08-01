@@ -28,6 +28,7 @@ import conceptnet.kb.profanity.ProfanityFilter;
 import conceptnet.kb.utilities.CnEdgeApi;
 import conceptnet.kb.utilities.CnNodeApi;
 import conceptnet.kb.utilities.CnRelatedTermsApi;
+import conceptnet.kb.weight.CredibilityFilter;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
 public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, ConnectedNode> {
 
     private Predicate<ConnectedNode> profanityFilter = new ProfanityFilter();
+    private Predicate<CnEdge> credibilityFilter = new CredibilityFilter(2, 1f);
 
     @Override
     public Optional<CnNode> query(String phrase) {
@@ -70,6 +72,21 @@ public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, C
         return node.edges()
                 .stream()
                 .filter(edge -> isCleanEdge(edge, node))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CnNode credibleCopy(CnNode cnNode) {
+        CnNode copy = SerializationUtils.clone(cnNode);
+        copy.edges(getCredibleEdges(cnNode));
+        return copy;
+    }
+
+    @Override
+    public List<CnEdge> getCredibleEdges(CnNode node) {
+        return node.edges()
+                .stream()
+                .filter(credibilityFilter)
                 .collect(Collectors.toList());
     }
 

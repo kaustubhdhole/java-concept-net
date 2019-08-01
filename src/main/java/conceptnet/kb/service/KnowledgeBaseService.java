@@ -61,6 +61,20 @@ public interface KnowledgeBaseService<NodeT, EdgeT, NeighbourT> {
     List<EdgeT> getCleanEdges(NodeT node);
 
     /**
+     * Creates a credible version of the cnNode by filtering out the edges which are less credible.
+     */
+    NodeT credibleCopy(NodeT cnNode);
+
+    /**
+     * Return all edges which pass the credibility cutoff (i.e. minimum number of contributors and minimum weight).
+     * <p>
+     * Note that an edge is clean if the connected node is clean. (So, users still can query with profane words.)
+     *
+     * @return all the edges
+     */
+    List<EdgeT> getCredibleEdges(NodeT node);
+
+    /**
      * Retrieve terms similar in the ConceptNet embedding space to a word or a commonly occurring phrase.
      *
      * @param phrase "bambaiyya"
