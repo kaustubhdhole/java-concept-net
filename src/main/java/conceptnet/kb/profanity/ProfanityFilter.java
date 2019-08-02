@@ -23,8 +23,6 @@ import conceptnet.kb.graph.ConnectedNode;
 import lombok.Cleanup;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.function.Predicate;
 
@@ -37,17 +35,16 @@ import java.util.function.Predicate;
  */
 public class ProfanityFilter implements Predicate<ConnectedNode> {
 
-    private Trie profaneLexicon;
+    private ITrie profaneLexicon;
 
     public ProfanityFilter() {
         profaneLexicon = new Trie();
         try {
             @Cleanup BufferedReader br = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(
-                            "src/main/resources/conceptnet/kb/profanity/profane_words.txt")));
-            br.lines().map(String::trim)
-                    .forEach(word -> profaneLexicon.insert(word));
-        } catch (IOException e) {
+                    new InputStreamReader(ProfanityFilter.class.getResourceAsStream("profane_words.txt")));
+            br.lines().map(String::trim).forEach(word -> profaneLexicon.insert(word));
+            System.out.println("Profanity file successfully loaded");
+        } catch (Exception e) {
             System.err.println("Profanity file not loaded");
         }
     }
