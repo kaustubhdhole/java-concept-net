@@ -95,4 +95,15 @@ public class CnEdge extends CnObject implements Serializable {
     public ConnectedNode subjectNode() {
         return startNode;
     }
+
+    @Override
+    public String toString() {
+        return "["
+                + startNode.display()
+                + "]---"
+                + relation.relationType().name()
+                + "--->["
+                + endNode.display()
+                + "]";
+    }
 }
