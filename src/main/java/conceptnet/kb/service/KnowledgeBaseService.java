@@ -19,8 +19,10 @@
 
 package conceptnet.kb.service;
 
+import conceptnet.kb.graph.CnNode;
 import conceptnet.kb.graph.RelatedTerms;
 import conceptnet.kb.graph.RelationType;
+import conceptnet.kb.wordnet.PosType;
 
 import java.util.List;
 import java.util.Optional;
@@ -150,7 +152,18 @@ public interface KnowledgeBaseService<NodeT, EdgeT, NeighbourT> {
      *
      * @param "checking account"
      * @param "is       A"
+     * @param "noun"
      * @return "bank account"
      */
-    List<String> getRelations(NodeT node, List<RelationType> relationTypes);
+    List<String> getRelations(String phrase, List<RelationType> relationTypes, List<PosType> posTypes);
+
+    /**
+     * Get labels of nodes having a "relationType" relationship relation with the node found from phrase.
+     *
+     * @param "checking account"
+     * @param "is       A"
+     * @param "noun"
+     * @return "bank account"
+     */
+    List<String> getRelations(CnNode node, List<RelationType> relationTypes, List<PosType> posTypes);
 }

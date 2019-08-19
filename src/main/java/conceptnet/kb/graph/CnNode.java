@@ -22,6 +22,7 @@ package conceptnet.kb.graph;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.gson.annotations.SerializedName;
 import conceptnet.kb.utilities.PaginationView;
+import conceptnet.kb.wordnet.PosType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -114,6 +115,32 @@ public class CnNode extends CnObject implements ICnNode, Serializable {
                 .filter(e -> relationTypes.contains(e.relation().relationType()))
                 .filter(e -> e.objectNode().language() != null && e.objectNode().language().equalsIgnoreCase("en"))
                 .map(e -> e.objectNode().label())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> connectedSubjectNodes(List<RelationType> relationTypes, List<PosType> posTypes) {
+        return edges()
+                .stream()
+                .filter(e -> e.objectNode().term().equalsIgnoreCase(id()))
+                .filter(e -> relationTypes.contains(e.relation().relationType()))
+                .filter(e -> e.subjectNode().language() != null && e.subjectNode().language().equalsIgnoreCase("en"))
+                .map(e -> e.subjectNode())
+                .filter(n -> posTypes.contains(n.posType()))
+                .map(n -> n.label())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> connectedObjectNodes(List<RelationType> relationTypes, List<PosType> posTypes) {
+        return edges()
+                .stream()
+                .filter(e -> e.subjectNode().term().equalsIgnoreCase(id()))
+                .filter(e -> relationTypes.contains(e.relation().relationType()))
+                .filter(e -> e.objectNode().language() != null && e.objectNode().language().equalsIgnoreCase("en"))
+                .map(e -> e.objectNode())
+                .filter(n -> posTypes.contains(n.posType()))
+                .map(n -> n.label())
                 .collect(Collectors.toList());
     }
 

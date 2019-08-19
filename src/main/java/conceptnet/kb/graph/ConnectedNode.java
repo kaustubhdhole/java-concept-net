@@ -21,6 +21,7 @@ package conceptnet.kb.graph;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.gson.annotations.SerializedName;
+import conceptnet.kb.wordnet.PosType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -67,10 +68,10 @@ public class ConnectedNode implements Serializable {
      *
      * @return (n)noun (v)verb (a)adjective and adverb(r)
      */
-    public Optional<String> wnSyntacticCategory() {
+    public PosType posType() {
         if (null != senseLabel) {
-            return Optional.of(senseLabel.split(",")[0].trim());
-        } else return Optional.empty();
+            return PosType.fromString(senseLabel.split(",")[0].trim());
+        } else return PosType.None;
     }
 
     /**

@@ -29,6 +29,7 @@ import conceptnet.kb.utilities.CnEdgeApi;
 import conceptnet.kb.utilities.CnNodeApi;
 import conceptnet.kb.utilities.CnRelatedTermsApi;
 import conceptnet.kb.weight.CredibilityFilter;
+import conceptnet.kb.wordnet.PosType;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
@@ -157,14 +158,27 @@ public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, C
         Optional<CnNode> node = query(phrase);
         if (node.isPresent()) {
             CnNode n = node.get();
-            return getRelations(n, relationTypes);
+            return getRelations(n, relationTypes, new ArrayList<>());
         }
         return new ArrayList<>();
     }
 
     @Override
-    public List<String> getRelations(CnNode node, List<RelationType> relationTypes) {
-        return node.connectedObjectNodes(relationTypes);
+    public List<String> getRelations(String phrase, List<RelationType> relationTypes, List<PosType> posTypes) {
+        Optional<CnNode> node = query(phrase);
+        if (node.isPresent()) {
+            CnNode n = node.get();
+            return getRelations(n, relationTypes, posTypes);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getRelations(CnNode node, List<RelationType> relationTypes, List<PosType> posTypes) {
+        if (posTypes.isEmpty()) {
+            return node.connectedObjectNodes(relationTypes);
+        }
+        return node.connectedObjectNodes(relationTypes, posTypes);
     }
 
     @Override

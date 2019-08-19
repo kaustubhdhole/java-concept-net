@@ -19,6 +19,8 @@
 
 package conceptnet.kb.graph;
 
+import conceptnet.kb.wordnet.PosType;
+
 import java.util.List;
 
 /**
@@ -66,6 +68,22 @@ public interface ICnNode {
     List<String> connectedObjectNodes(List<RelationType> relationTypes);
 
     /**
+     * Return all the nodes connected with one of the relationTypes
+     * in which this node appears as the object and it is of the given posTypes.
+     *
+     * @return list of phrases for each node.
+     */
+    List<String> connectedSubjectNodes(List<RelationType> relationTypes, List<PosType> posTypes);
+
+    /**
+     * Return all the nodes connected with one of the relationTypes
+     * in which this node appears as the subject and it is one of the given posTypes.
+     *
+     * @return list of phrases for each node.
+     */
+    List<String> connectedObjectNodes(List<RelationType> relationTypes, List<PosType> posTypes);
+
+    /**
      * If thisNode is connected to any of thoseNodes.
      *
      * @param thoseNodes nodes we want to check for relation
@@ -97,4 +115,5 @@ public interface ICnNode {
      * @return true if there is at least one relation
      */
     boolean anyMatch(List<CnNode> thoseNodes);
+
 }
