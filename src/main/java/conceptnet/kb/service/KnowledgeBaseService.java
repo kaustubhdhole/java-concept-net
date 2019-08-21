@@ -152,6 +152,15 @@ public interface KnowledgeBaseService<NodeT, EdgeT, NeighbourT> {
      *
      * @param "checking account"
      * @param "is       A"
+     * @return "bank account"
+     */
+    List<String> getRelations(CnNode cnNode, List<RelationType> relationTypes);
+
+    /**
+     * Get labels of nodes having a "relationType" relationship relation with the node found from phrase.
+     *
+     * @param "checking account"
+     * @param "is       A"
      * @param "noun"
      * @return "bank account"
      */

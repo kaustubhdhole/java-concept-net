@@ -50,7 +50,12 @@ public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, C
 
     @Override
     public Optional<CnNode> query(String phrase) {
-        return CnNodeApi.query(phrase);
+        try {
+            Optional<CnNode> node = CnNodeApi.query(phrase);
+            return node;
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -98,7 +103,12 @@ public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, C
 
     @Override
     public Optional<RelatedTerms> getRelatedTerms(String phrase) {
-        return CnRelatedTermsApi.getRelatedTerms(phrase);
+        try {
+            Optional<RelatedTerms> relatedTerms = CnRelatedTermsApi.getRelatedTerms(phrase);
+            return relatedTerms;
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -164,6 +174,11 @@ public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, C
     }
 
     @Override
+    public List<String> getRelations(CnNode cnNode, List<RelationType> relationTypes) {
+        return getRelations(cnNode, relationTypes, new ArrayList<>());
+    }
+
+    @Override
     public List<String> getRelations(String phrase, List<RelationType> relationTypes, List<PosType> posTypes) {
         Optional<CnNode> node = query(phrase);
         if (node.isPresent()) {
@@ -183,7 +198,12 @@ public class ConceptNetService implements KnowledgeBaseService<CnNode, CnEdge, C
 
     @Override
     public Optional<CnEdge> getEdge(RelationType relationType, String phrase1, String phrase2) {
-        return CnEdgeApi.query(relationType, phrase1, phrase2);
+        try {
+            Optional<CnEdge> cnEdge = CnEdgeApi.query(relationType, phrase1, phrase2);
+            return cnEdge;
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
     }
 
 }
